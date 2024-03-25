@@ -1,9 +1,25 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./Routes/Home";
+import Search from "./Routes/Search";
+import Tv from "./Routes/Tv";
 
 function App() {
   return (
     <>
-      <h1>netflix</h1>
+      <Router>
+        <Routes>
+          <Route path="/">
+            <Home />
+          </Route>
+          <Route path="/tv">
+            <Tv />
+          </Route>
+          <Route path="/search">
+            <Search />
+          </Route>
+        </Routes>
+      </Router>
     </>
   );
 }
