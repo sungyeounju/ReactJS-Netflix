@@ -1,5 +1,6 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Header from "./Routes/Components/Header";
 import Home from "./Routes/Home";
 import Search from "./Routes/Search";
 import Tv from "./Routes/Tv";
@@ -8,7 +9,8 @@ function App() {
   return (
     <>
       <Router>
-        <Routes>
+        <Header />
+        <Switch>
           <Route path="/">
             <Home />
           </Route>
@@ -18,7 +20,7 @@ function App() {
           <Route path="/search">
             <Search />
           </Route>
-        </Routes>
+        </Switch>
       </Router>
     </>
   );
