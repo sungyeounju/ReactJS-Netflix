@@ -1,16 +1,15 @@
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import { Link, useRouteMatch } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const Nav = styled.nav`
+const Nav = styled(motion.nav)`
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: fixed;
   width: 100%;
   top: 0;
-  background-color: black;
   font-size: 14px;
   padding: 20px 60px;
   color: white;
@@ -73,6 +72,7 @@ const Input = styled(motion.input)`
   transform-origin: right center;
   position: absolute;
   left: -150px;
+  padding: 5px;
 `;
 const logoVariants = {
   normal: {
@@ -85,13 +85,28 @@ const logoVariants = {
     },
   },
 };
+const navVariants = {
+  top: { backgroundColor: "rgba(0, 0, 0, 0)" },
+  scroll: { backgroundColor: "rgba(0, 0, 0, 1)" },
+};
 function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const toggleSearch = () => setSearchOpen((prev) => !prev);
   const homeMatch = useRouteMatch("/");
   const tvMatch = useRouteMatch("/tv");
+  const navAnimation = useAnimation();
+  const { scrollY } = useViewportScroll();
+  useEffect(() => {
+    scrollY.onChange(() => {
+      if (scrollY.get() > 80) {
+        navAnimation.start("scroll");
+      } else {
+        navAnimation.start("top");
+      }
+    });
+  }, [scrollY, navAnimation]);
   return (
-    <Nav>
+    <Nav variants={navVariants} animate={navAnimation} initial={"top"}>
       <Col>
         <Logo
           variants={logoVariants}
@@ -107,14 +122,12 @@ function Header() {
         <Items>
           <Item>
             <Link to="/">
-              Home
-              {homeMatch?.isExact && <Circle layoutId="circle" />}
+              Home {homeMatch?.isExact && <Circle layoutId="circle" />}
             </Link>
           </Item>
           <Item>
             <Link to="/tv">
-              Tv Shows
-              {tvMatch && <Circle layoutId="circle" />}
+              Tv Shows {tvMatch && <Circle layoutId="circle" />}
             </Link>
           </Item>
         </Items>
