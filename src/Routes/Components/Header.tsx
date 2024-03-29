@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { Link, useRouteMatch } from "react-router-dom";
+import { useState } from "react";
 
 const Nav = styled.nav`
   display: flex;
@@ -58,11 +59,20 @@ const Circle = styled(motion.span)`
   border-radius: 50%;
   background: ${(props) => props.theme.red};
 `;
-const Search = styled.span`
+const Search = styled(motion.span)`
   color: white;
+  display: flex;
+  align-items: center;
+  position: relative;
   svg {
     height: 25px;
   }
+`;
+const Input = styled(motion.input)`
+  border: none;
+  transform-origin: right center;
+  position: absolute;
+  left: -150px;
 `;
 const logoVariants = {
   normal: {
@@ -76,6 +86,8 @@ const logoVariants = {
   },
 };
 function Header() {
+  const [searchOpen, setSearchOpen] = useState(false);
+  const toggleSearch = () => setSearchOpen((prev) => !prev);
   const homeMatch = useRouteMatch("/");
   const tvMatch = useRouteMatch("/tv");
   return (
@@ -109,7 +121,10 @@ function Header() {
       </Col>
       <Col>
         <Search>
-          <svg
+          <motion.svg
+            onClick={toggleSearch}
+            animate={{ x: searchOpen ? -180 : 0 }}
+            transition={{ type: "linear" }}
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -119,7 +134,11 @@ function Header() {
               d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
               clipRule="evenodd"
             ></path>
-          </svg>
+          </motion.svg>
+          <Input
+            animate={{ scaleX: searchOpen ? 1 : 0 }}
+            placeholder="Search for movie or Tvshow"
+          />
         </Search>
       </Col>
     </Nav>
