@@ -39,9 +39,10 @@ const Items = styled.ul`
 const Item = styled.li`
   position: relative;
   margin-right: 20px;
-  color: ${(props) => props.theme.white.darker};
+  color: ${(props) => props.theme.white.lighter};
   transition: color 0.3s ease-in-out;
   font-size: 17px;
+  font-weight: 500;
   &:hover {
     color: ${(props) => props.theme.white.lighter};
   }
