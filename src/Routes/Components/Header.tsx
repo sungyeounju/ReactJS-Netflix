@@ -72,8 +72,8 @@ const Input = styled(motion.input)`
   border: none;
   transform-origin: right center;
   position: absolute;
-  left: -150px;
-  padding: 5px;
+  left: -140px;
+  padding: 6px 13px;
 `;
 const logoVariants = {
   normal: {
