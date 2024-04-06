@@ -50,12 +50,29 @@ const Row = styled(motion.div)`
 `;
 
 const Box = styled(motion.div)<{ $bgPhoto: string }>`
+  overflow: hidden;
+  position: relative;
   background-image: url(${(props) => props.$bgPhoto});
   background-size: cover;
   background-position: center center;
   height: 200px;
-  color: red;
-  font-size: 66px;
+  &:first-child {
+    transition-origin: center left;
+  }
+  &:last-child {
+    transition-origin: center right;
+  }
+`;
+const Info = styled(motion.div)`
+  opacity: 0;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: 500;
+  background: rgba(0, 0, 0, 0.8);
 `;
 const rowVarients = {
   hidden: {
@@ -66,6 +83,31 @@ const rowVarients = {
   },
   exit: {
     x: -window.outerWidth,
+  },
+};
+const boxVariants = {
+  normal: {
+    scale: 1,
+  },
+  hover: {
+    scale: 1.3,
+    y: -50,
+    zIndex: 99,
+    transition: {
+      type: "tween",
+      delay: 0.3,
+      duration: 0.3,
+    },
+  },
+};
+const infoVariants = {
+  hover: {
+    opacity: 1,
+    transition: {
+      delay: 0.3,
+      duration: 0.1,
+      type: "tween",
+    },
   },
 };
 const offset = 6;
@@ -82,7 +124,7 @@ function Home() {
       toggleLeaving();
       const totalMovies = data.results.length - 1;
       const maxIndex = Math.floor(totalMovies / offset) - 1;
-      setIndex((prev) => prev + 1);
+      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
   const toggleLeaving = () => setLeaving((prev) => !prev);
@@ -116,7 +158,12 @@ function Home() {
                     <Box
                       key={movie.id}
                       $bgPhoto={makeImgPath(movie.backdrop_path, "w500")}
-                    ></Box>
+                      variants={boxVariants}
+                      whileHover="hover"
+                      initial="normal"
+                    >
+                      <Info variants={infoVariants}>{movie.title}</Info>
+                    </Box>
                   ))}
               </Row>
             </AnimatePresence>
