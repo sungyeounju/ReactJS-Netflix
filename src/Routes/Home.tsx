@@ -64,6 +64,25 @@ const Box = styled(motion.div)<{ $bgPhoto: string }>`
     transition-origin: center right;
   }
 `;
+const Overlay = styled(motion.div)`
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+`;
+const BigMovie = styled(motion.div)`
+  position: absolute;
+  width: 40vw;
+  height: 80vh;
+  background-color: red;
+  top: calc(50% - 40vh);
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+`;
 const Info = styled(motion.div)`
   opacity: 0;
   position: absolute;
@@ -135,6 +154,7 @@ function Home() {
   const onBoxClicked = (movieId: number) => {
     history.push(`/movies/${movieId}`);
   };
+  const onOverlayClick = () => history.push("/");
   return (
     <Wrapper>
       {isLoading ? (
@@ -179,19 +199,10 @@ function Home() {
           </Slider>
           <AnimatePresence>
             {bigMovieMatch ? (
-              <motion.div
-                layoutId={bigMovieMatch.params.movieId}
-                style={{
-                  position: "absolute",
-                  width: "40vw",
-                  height: "80vh",
-                  backgroundColor: "red",
-                  top: 50,
-                  left: 0,
-                  right: 0,
-                  margin: "0 auto",
-                }}
-              />
+              <>
+                <Overlay onClick={onOverlayClick} animate={{ opacity: 1 }} />
+                <BigMovie layoutId={bigMovieMatch.params.movieId} />
+              </>
             ) : null}
           </AnimatePresence>
         </>
