@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useNavigate, useMatch } from "react-router-dom";
 import { styled } from "styled-components";
 import { getMovies, IGetMoviesResult } from "../api";
 import { makeImgPath } from "../utils";
@@ -132,8 +132,8 @@ const infoVariants = {
 };
 const offset = 6;
 function Home() {
-  const history = useHistory();
-  const bigMovieMatch = useRouteMatch<{ movieId: string }>("/movies/:movieId");
+  const navigate = useNavigate();
+  const bigMovieMatch = useMatch("/movies/:movieId");
 
   const { data, isLoading } = useQuery<IGetMoviesResult>(
     ["movies", "nowPlaying"],
@@ -152,9 +152,10 @@ function Home() {
   };
   const toggleLeaving = () => setLeaving((prev) => !prev);
   const onBoxClicked = (movieId: number) => {
-    history.push(`/movies/${movieId}`);
+    // history.push(`/movies/${movieId}`);
+    navigate(`/movies/${movieId}`);
   };
-  const onOverlayClick = () => history.push("/");
+  const onOverlayClick = () => navigate(`/`);
   return (
     <Wrapper>
       {isLoading ? (
